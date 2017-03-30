@@ -498,19 +498,24 @@ If you aren't familiar with Slack, they offer a free chat communications service
 **Slack Integration Architecture**
 ![Overview of Slack Integration](/Images/SlackOverview.png)
 
-1\. Go to [http://www.slack.com](http://www.slack.com) and create a username, as well as a team.
+1\. Navigate to the API Gateway Console page and Bring up your API Stage. Select the message resource and one of the methods.
+![API Gateway Invoke URL](/Images/slack-api-gateway-url.png)
 
-2\. Once logged into Slack, navigate to [https://slack.com/apps](https://slack.com/apps) and click **Build your own** near the top of the page. Then on the next screen, select **Make a Custom Integration**.
+2\. 1. Copy the entire Invoke URL. Make sure to copy the entire url including "HTTPS://“. Change the last part from /message to /slack . Copy this URL to your text editor
 
-3\. On the "Custom Integration" page, select **Slash Commands** to create a Slash Command. Slash commands allow you to define a command that will inform Slack to forward your message to an external source with a webhook. In this case you'll configure your Slash Command to make a POST request to an external URL (the URL for your API Gateway endpoint).
+3\. Go to [http://www.slack.com](http://www.slack.com) and create a username, as well as a team.
 
-4\. On the Slash Commands page, define a command in the **Commands** text box. Insert **/survivors** as your Slash Command. Then select "Add Slash Command Integration" to save it.
+4\. 1. Once logged into Slack, navigate to [http://www.slack.com/app](http://www.slack.com/app)  and click **Build** in the top right of the page. Then on the next screen, select **Start Building** in the center of the page.
 
-5\. On the Integration Settings page, make sure the **Method** section has "POST" selected from the dropdown options. Then scroll to the **Token** section and copy the Token (or generate a new one) to a text file as you'll need it in the following steps.
+5\. 1. Give the new app a name, such as **survivor_chat** and select the slack team from the list. Click **Create App**. 
+![Slack App Creation](/Images/slack-create-app.png)
 
-6\. Keep the Slack browser tab open and in another tab navigate to the Lambda service in the AWS Management Console.
+6\. 1. From the Features menu on the left, select **Slash Commands** and click **Create New Command** to create a Slash Command. Slash commands allow you to define a command that will inform Slack to forward your message to an external source with a webhook. In this case you'll configure your Slash Command to make a POST request to an external URL (the URL for your API Gateway endpoint). 
 
-7\. Click **Create a Lambda function**. You'll create a Lambda function to parse incoming Slack messages and send them to the Chat Service.
+7\. 1. On the **Slash Commands** page, define a command in the Commands text box. Insert /survivors as your Slash Command. Then select **Add Slash Command Integration** to save it. 
+![Slack App Creation](/Images/slash-cmd-integration.png)
+
+7\. From the console goto the lambda service. Click **Create a Lambda function**. You'll create a Lambda function to parse incoming Slack messages and send them to the Chat Service.
 
 8\. On the Blueprints page select **Blank Function** to create a function from scratch. Also skip past the triggers page by selecting **Next**.
 
