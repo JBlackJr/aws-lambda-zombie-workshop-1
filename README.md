@@ -460,7 +460,7 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 11\. On the Blueprints screen select **Blank Function** to create a Lambda function from scratch.
 
-12\. In Configure Triggers section, select the DynamoDB event source type and then select the **messages** DynamoDB table. It should appear as **"[Your CloudFormation stack name]-messages"**. Then set the **Batch size** to **5**, the **Starting position** to **Lastest** and select the checkbox **Enable trigger**. Then click on Next button.
+12\. In Configure Triggers section,  click on Next button.
 
 13\. Give your function a name, such as **"[Your CloudFormation stack name]-ESsearch"**. Keep the runtime as Node.js 4.3. You can set a description for the function if you'd like.
 
@@ -476,7 +476,10 @@ Then on line 7, replace the **endpoint** variable that has a value of **ENDPOINT
 
 17\. In the "Timeout" field for your Lambda function, change the function timeout to **1** minute. This ensures Lambda can process the batch of messages before Lambda times out. Keep all the other defaults on the page set as is. Select **Next** and then on the Review page, select **Create function** to create your Lambda function.
 
-18\. In the above step, we configured [DynamoDB Streams](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) to capture incoming messages on the table and trigger a Lambda function to push them to our Elasticsearch cluster. Your messages posted in the chat from this point forward will be indexed to Elasticsearch. Post a few messages in the chat, at least 5 as configured in the DynamoDB Streams event source (batch size). You should be able to see that messages are being indexed in the "Indices" section for your cluster in the Elasticsearch Service console.
+18\. Open back up the lambda function you created and click the Trigger tab. Click add trigger and then click the box to the left of the lambda icon . Select the table name . Then set **Batch size** to 5, the **Starting Position** to **Latest** and select the checkbox to enable trigger. before clicking the next button click the link above to add permissions to the role. On the new screen make sure the role you created above is selected and for **Policy Name** choose **Create new role policy.**. Click the **Allow** button and go back to the trigger page and click **Submit**
+![Elasticsearch Trigger](/Images/Elasticsearch-trigger.png)
+
+19\. In the above step, we configured [DynamoDB Streams](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html) to capture incoming messages on the table and trigger a Lambda function to push them to our Elasticsearch cluster. Your messages posted in the chat from this point forward will be indexed to Elasticsearch. Post a few messages in the chat, at least 5 as configured in the DynamoDB Streams event source (batch size). You should be able to see that messages are being indexed in the "Indices" section for your cluster in the Elasticsearch Service console.
 ![API Gateway Invoke URL](/Images/Search-Done.png)
 
 **LAB 3 COMPLETE**
@@ -513,7 +516,7 @@ If you aren't familiar with Slack, they offer a free chat communications service
 6\. From the Features menu on the left, select **Slash Commands** and click **Create New Command** to create a Slash Command. Slash commands allow you to define a command that will inform Slack to forward your message to an external source with a webhook. In this case you'll configure your Slash Command to make a POST request to an external URL (the URL for your API Gateway endpoint). 
 
 7\. On the **Slash Commands** page, define a command in the Commands text box. Insert /survivors as your Slash Command. Then select **Add Slash Command Integration** to save it. 
-![Slack Command](/Images/slash-cmd-integration.png)
+![Slack App Creation](/Images/slash-cmd-integration.png)
 
 8\. From the console goto the lambda service. Click **Create a Lambda function**. You'll create a Lambda function to parse incoming Slack messages and send them to the Chat Service.
 
