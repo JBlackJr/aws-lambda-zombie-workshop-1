@@ -122,6 +122,8 @@ Click **Next Step**.
 
 8\. On the "Message Customizations" page, in the section titled **Do you want to customize your email verification message?** add a custom email subject such as "Signal Corps Survivor Confirmation". We won't modify the message body but you could add your own custom message in there. We'll let Cognito send the emails from the service email address, but in production you could configure Cognito to send these verifications from an email server you own. Leave the rest of the default settings and click **Next step**. 
 
+On the Tag page, leave the default options. 
+
 On the Devices page, leave the default option of "No" selected. We will not configure the User Pool to remember user's devices.
 
 9\. On the Apps page, click **Add an app**. In the **App Name** textbox, type "Zombie Survivor Chat App" and **deselect the client secret checkbox**. Click **Set attribute read and write permissions**. You need to make sure that the app has "writable" and "readable" access to the attributes you created. Make sure that **all of the checkboxes are selected** for "Readable Attributes" and "Writable Attributes". Then click **Create app**, and then click **Next step**.
@@ -190,7 +192,7 @@ Download the **S3/assets/js.constants.js** file to your local machine and open i
 
 * The Identity Pool Id was automatically filled in with several other variables when the CloudFormation template was launched.
 
-20\. Save the constants.js file and upload it back to S3. In the S3 console window, click the blue **Upload** button and upload the constants.js file from your local machine. **Make sure to click "Set Details->SetPermissions" and select the checkbox "Make everything public"**. Then click **Start Upload** and it should overwrite the old constants file with the new one. Make sure you are uploading the file back to the same directory where you originally downloaded it from.
+20\. Save the constants.js file and upload it back to S3. In the S3 console window, click the blue **Upload** button and upload the constants.js file from your local machine. Leave the default as you click next to continue. Then click **Start Upload** and it should overwrite the old constants file with the new one. Make sure you are uploading the file back to the same directory where you originally downloaded it from. While the file is still selected clect the **more** drop down menu and select **Make Public**.
 
 * Your application now has the configuration it needs to interact with Cognito.
 
@@ -259,7 +261,7 @@ The application uses [CORS](http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.
 
 8\. Select the blue **Save** button and click **OK** if a pop up asks you to confirm that you want to switch to Lambda integration. Then grant access for API Gateway to invoke the Lambda function by clicking "OK" again. This 2nd popup asks you to confirm that you want to allow API Gateway to be able to invoke your Lambda function.
 
-9\. Click the Method Response section of the Method Execution Flow. You'll now tell API Gateway how what types of HTTP response types you want your API to expose.
+9\. Go back by selecting the blue **Method Execution** link. Click the Method Response section of the Method Execution Flow. You'll now tell API Gateway how what types of HTTP response types you want your API to expose.
 
 10\. Add a 200 HTTP Status response. Click "Add Response", type "200" in the status code text box and then click the little checkmark to save the method response, as shown below.
 ![Method Response](/Images/Typing-Step10.png)
@@ -356,7 +358,7 @@ In this section, you’ll create a free-trial Twilio SMS phone number. You will 
 
 12\. Click **Create a Lambda function** and select the blueprint titled **Blank Function** as we will be creating a brand new function. Click **Next** to skip through the Configure Triggers screen.
 
-13\. Create a name for the function, such as **"[Your CloudFormation stack name]-TwilioProcessing"**. Leave the "Runtime" as **Node.js 4.3**. From the GitHub repo, open the **TwilioProcessing.js** file. Delete the sample code in the Lambda editor and copy the entire contents from this file into the Lambda code entry section. Once you have copied the code into Lambda, scroll down to [line 8](/Twilio/TwilioProcessing.js#L8) in the code where the "API" variable is declared. API.endpoint should show a value of "INSERT YOUR API GATEWAY URL HERE INCLUDING THE HTTPS://". Please replace this string with the fully qualified domain name (FQDN) of the URL for your **/zombie/message** POST method found in API Gateway. For example, it should look something like "https://xxxxxxxx.execute-api.us-west-2.amazonaws.com".
+13\. Create a name for the function, such as **"[Your CloudFormation stack name]-TwilioProcessing"**. Leave the "Runtime" as **Node.js 4.3**. From the GitHub repo, open the **TwilioProcessing.js** file. Delete the sample code in the Lambda editor and copy the entire contents from this file into the Lambda code entry section. Once you have copied the code into Lambda, scroll down to [line 8](/Twilio/TwilioProcessing.js#L8) in the code where the "API" variable is declared. API.endpoint should show a value of "INSERT YOUR API GATEWAY URL HERE INCLUDING THE HTTPS://". Please replace this string with the fully qualified domain name (FQDN) of the URL for your **/zombie/message** POST method found in API Gateway. For example, it should look something like "https://xxxxxxxx.execute-api.us-west-2.amazonaws.com". Dont include anything past the **.com**
 
 You should also fill in the region code in the variable **API.region**. This should be the region where you launched CloudFormation.
 
@@ -391,7 +393,7 @@ After copying the code into the editor, click the **Save** button. You have now 
 
 23\. Now that you have configured the Integration Request to transform incoming messages into JSON, we need to configure the Integration Response to transform outgoing responses back to Twilio into XML format since the Twilio API requires XML as a response Content-Type. This step is required so that when you send SMS messages to the survivor Chat Service, it can respond back to your Twilio Phone Number with a confirmation message that your message was received successfully.
 
-24\. Head back to the Method Execution screen for the twilio POST method. On the "Method Execution" screen for your /twilio POST method, click **Integration Response**. On the "Integration Response" screen, click the black arrow to expand the method response section. Expand the **Body Mapping Templates** section. You should see a Content-Type of "application/json". We need a Content-Type of XML, not JSON, so **delete this Content-Type by clicking the little black minus icon** and click **Delete** on the pop-up window.
+24\. Head back to the Method Execution screen for the twilio POST method. On the "Method Execution" screen for your /twilio POST method, click **Integration Response**. On the "Integration Response" screen, click the black arrow to the left of Response ** 200** to expand the method response section. Expand the **Body Mapping Templates** section. You should see a Content-Type of "application/json". We need a Content-Type of XML, not JSON, so **delete this Content-Type by clicking the little black minus icon** and click **Delete** on the pop-up window.
 
 25\. Click **Add mapping template** similar to the way you did this in the earlier steps for the Integration Request section.
 
@@ -439,9 +441,9 @@ In this lab you'll launch an Elasticsearch Service cluster and setup DynamoDB St
 
 2\. Create a new Amazon Elasticsearch domain. Provide it a name such as "[Your CloudFormation stack name]-zombiemessages". Click **Next**.
 
-3\. On the **Configure Cluster** page, leave the default cluster settings and click **Next**.
+3\. On the **Configure Cluster** page, set version to 2.3 and leave the the rest at default cluster settings and click **Next**.
 
-4\. For the access policy, select the **Allow or deny access to one or more AWS accounts or IAM users** option in the dropdown and fill in your account ID. Your AWS Account ID is actually provided to you in the examples section so just copy and paste it into the text box. Make sure **Allow** is selected for the "Effect" dropdown option. Click **OK**.
+4\. For the access policy, select the **Allow Open Access** (or **Allow Access from Specific IPs** if instructor provides Ip addresses) option in the dropdown and fill in your account ID. Your AWS Account ID is actually provided to you in the examples section so just copy and paste it into the text box. Make sure **Allow** is selected for the "Effect" dropdown option. Click **OK**.
 
 5\. Select **Next** to go to the domain review page.
 
@@ -508,17 +510,17 @@ If you aren't familiar with Slack, they offer a free chat communications service
 
 3\. Go to [http://www.slack.com](http://www.slack.com) and create a username, as well as a team.
 
-4\. Once logged into Slack, navigate to [http://www.slack.com/app](http://www.slack.com/app)  and click **Build** in the top right of the page. Then on the next screen, select **Start Building** in the center of the page.
+4\. Once logged into Slack, navigate to [http://api.slack.com](http://api.slack.com). Select **Start Building** in the center of the page.
 
 5\. Give the new app a name, such as **survivor_chat** and select the slack team from the list. Click **Create App**. 
 ![Slack App Creation](/Images/slack-app-create.png)
 
 6\. From the Features menu on the left, select **Slash Commands** and click **Create New Command** to create a Slash Command. Slash commands allow you to define a command that will inform Slack to forward your message to an external source with a webhook. In this case you'll configure your Slash Command to make a POST request to an external URL (the URL for your API Gateway endpoint). 
 
-7\. On the **Slash Commands** page, define a command in the Commands text box. Insert /survivors as your Slash Command. Then select **Add Slash Command Integration** to save it. 
+7\. On the **Slash Commands** page, define a command in the Commands text box. Insert /survivors as your Slash Command. Then select **Add Slash Command Integration** to save it. Paste the URL from before to the **Request URL** and also give it a **Short Description**.
 ![Slack App Creation](/Images/slack-cmd-integration.png)
 
-8\. From the slack app menu on the right under **Settings** click **Basic Information**. Scroll down and under **App Credentials** copy the Verification Token to your text editor for use in the API Gateway later.
+8\. From the slack app menu on the right under **Settings** click **Basic Information**. First, click **Install your app to your team ** and install to your team. Next, scroll down and under **App Credentials** copy the Verification Token to your text editor for use in the API Gateway later.
 
 9\. From the console goto the lambda service. Click **Create a Lambda function**. You'll create a Lambda function to parse incoming Slack messages and send them to the Chat Service.
 
